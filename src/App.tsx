@@ -7,7 +7,8 @@ import {
   RotateCcw, 
   CheckCircle,
   Volume2,
-  VolumeX
+  VolumeX,
+  HelpCircle
 } from 'lucide-react';
 
 // --- AUDIO HELPERS ---
@@ -49,7 +50,20 @@ const playCompleteSound = () => {
   setTimeout(() => playTone(600, 'sine', 0.4), 400);
 };
 
-const ROUTINE = [
+interface RoutineStep {
+  id: string;
+  title: string;
+  duration: number;
+  switchAt?: number;
+  description: string;
+  color: string;
+  ringColor: string;
+  bgColor: string;
+  how: string;
+  why: string;
+}
+
+const ROUTINE: RoutineStep[] = [
   {
     id: 'piriformis',
     title: 'Piriformis Release',
@@ -58,7 +72,9 @@ const ROUTINE = [
     description: 'Sit on the floor. Place a massage ball under your right glute. Cross your right ankle over your left knee. Rest weight on a tender spot. Switch sides halfway (at 30s).',
     color: 'text-blue-500',
     ringColor: 'stroke-blue-500',
-    bgColor: 'bg-blue-50'
+    bgColor: 'bg-blue-50',
+    how: 'Sit on the floor. Place a massage ball under your right glute. Cross your right ankle over your left knee. Rest weight on a tender spot. Switch sides halfway (at 30s).',
+    why: 'Releasing the piriformis muscle reduces deep glute tightness, relieves pressure on the sciatic nerve (which runs directly underneath or through the muscle), and improves external hip rotation, preparing your hips for pelvic hinging.'
   },
   {
     id: 'nerve-floss',
@@ -68,7 +84,9 @@ const ROUTINE = [
     description: 'Sit on a chair, slump mid-back, tuck chin. Slowly straighten right leg while looking UP. Bend knee while tucking chin DOWN. Smooth motions. Switch legs at 30s.',
     color: 'text-indigo-500',
     ringColor: 'stroke-indigo-500',
-    bgColor: 'bg-indigo-50'
+    bgColor: 'bg-indigo-50',
+    how: 'Sit on a chair, slump mid-back, tuck chin. Slowly straighten right leg while looking UP. Bend knee while tucking chin DOWN. Smooth motions. Switch legs at 30s.',
+    why: 'Nerve flossing (neural gliding) gently stretches and releases tension along the sciatic nerve pathway. Rather than stretching a muscle, it helps the nerve slide smoothly through its surrounding tissues, reducing neural tightness and lower back stiffness.'
   },
   {
     id: 'glute-bridges',
@@ -77,7 +95,9 @@ const ROUTINE = [
     description: 'Lie on your back, knees bent. Drive through heels to lift hips. Squeeze glutes hard at the top for 1 second, then lower slowly. Repeat for 60 seconds.',
     color: 'text-purple-500',
     ringColor: 'stroke-purple-500',
-    bgColor: 'bg-purple-50'
+    bgColor: 'bg-purple-50',
+    how: 'Lie on your back, knees bent. Drive through heels to lift hips. Squeeze glutes hard at the top for 1 second, then lower slowly. Repeat for 60 seconds.',
+    why: 'Strengthening the glutes provides reciprocal inhibition to the hip flexors and hamstrings, causing them to naturally relax and lengthen. It also stabilizes the pelvis and lower back, facilitating a safer, deeper hip hinge during forward folds.'
   },
   {
     id: 'elevated-fold',
@@ -86,7 +106,9 @@ const ROUTINE = [
     description: 'Sit on a yoga block/book. Bend knees generously. Hinge at hips to glue your belly to your thighs. Slowly slide heels out until you feel a stretch, without losing belly contact.',
     color: 'text-teal-500',
     ringColor: 'stroke-teal-500',
-    bgColor: 'bg-teal-50'
+    bgColor: 'bg-teal-50',
+    how: 'Sit on a yoga block/book. Bend knees generously. Hinge at hips to glue your belly to your thighs. Slowly slide heels out until you feel a stretch, without losing belly contact.',
+    why: 'Elevating the pelvis tilts it forward, encouraging a true hip hinge rather than rounding the lower back. Keeping the belly in contact with the thighs ensures your lumbar spine remains protected and straight, shifting the entire stretch into the hamstrings and calves where it belongs.'
   }
 ];
 
@@ -222,11 +244,36 @@ export default function App() {
   const [isFinished, setIsFinished] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
 
+  // Tutorial Mode & Onboarding States
+  const [tutorialMode, setTutorialMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('foldable_tutorial_mode');
+    return saved !== null ? saved === 'true' : true;
+  });
+  const [showTutorial, setShowTutorial] = useState<boolean>(() => {
+    const saved = localStorage.getItem('foldable_tutorial_mode');
+    return saved !== null ? saved === 'true' : true;
+  });
+
   const currentStep = ROUTINE[currentStepIndex];
+
+  const toggleTutorialMode = () => {
+    initAudio();
+    setTutorialMode((prev) => {
+      const next = !prev;
+      localStorage.setItem('foldable_tutorial_mode', String(next));
+      if (!next) {
+        setShowTutorial(false);
+      } else {
+        setShowTutorial(true);
+        setIsActive(false);
+      }
+      return next;
+    });
+  };
 
   // Timer Logic & Sound Triggers
   useEffect(() => {
-    let interval: any = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
 
     if (isActive && timeLeft > 0) {
       interval = setInterval(() => {
@@ -251,27 +298,45 @@ export default function App() {
         });
       }, 1000);
     } else if (isActive && timeLeft === 0) {
-      clearInterval(interval);
+      if (interval) {
+        clearInterval(interval);
+      }
       handleNext();
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
   }, [isActive, timeLeft, currentStepIndex, soundEnabled, currentStep]);
 
   const handleNext = useCallback(() => {
     if (currentStepIndex < ROUTINE.length - 1) {
       setCurrentStepIndex((prev) => prev + 1);
       setTimeLeft(ROUTINE[currentStepIndex + 1].duration);
+      if (tutorialMode) {
+        setShowTutorial(true);
+        setIsActive(false);
+      }
     } else {
       setIsActive(false);
       setIsFinished(true);
+      localStorage.setItem('foldable_has_completed_once', 'true');
+      setTutorialMode(false);
+      localStorage.setItem('foldable_tutorial_mode', 'false');
+      setShowTutorial(false);
     }
-  }, [currentStepIndex]);
+  }, [currentStepIndex, tutorialMode]);
 
   const handlePrev = () => {
     if (currentStepIndex > 0) {
       setCurrentStepIndex((prev) => prev - 1);
       setTimeLeft(ROUTINE[currentStepIndex - 1].duration);
+      if (tutorialMode) {
+        setShowTutorial(true);
+        setIsActive(false);
+      }
     }
   };
 
@@ -279,6 +344,9 @@ export default function App() {
     initAudio(); // Initialize audio context upon user interaction
     if (isFinished) {
       resetRoutine();
+    } else if (showTutorial) {
+      setShowTutorial(false);
+      setIsActive(true);
     } else {
       setIsActive(!isActive);
     }
@@ -289,6 +357,9 @@ export default function App() {
     setTimeLeft(ROUTINE[0].duration);
     setIsActive(false);
     setIsFinished(false);
+    if (tutorialMode) {
+      setShowTutorial(true);
+    }
   };
 
   const formatTime = (seconds: number) => {
@@ -325,12 +396,23 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 md:p-8 font-sans text-slate-800">
       
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         {/* Header */}
         <div className={`p-6 ${currentStep.bgColor} transition-colors duration-500`}>
           <div className="flex justify-between items-center mb-6">
             <h1 className="font-bold text-slate-800 tracking-tight">Morning Mobility</h1>
             <div className="flex items-center gap-3">
+              <button 
+                onClick={toggleTutorialMode}
+                className={`p-2 rounded-full transition-colors ${
+                  tutorialMode 
+                    ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' 
+                    : 'bg-white/50 hover:bg-white/80 text-slate-700'
+                }`}
+                title={tutorialMode ? "Disable tutorial explanation" : "Enable tutorial explanation"}
+              >
+                <HelpCircle className="w-4 h-4" />
+              </button>
               <button 
                 onClick={() => {
                   initAudio();
@@ -420,6 +502,64 @@ export default function App() {
               <SkipForward className="w-6 h-6" fill="currentColor" />
             </button>
           </div>
+        </div>
+
+        {/* Sliding Onboarding/Tutorial Drawer */}
+        <div 
+          className={`absolute inset-x-0 bottom-0 z-20 bg-white/95 backdrop-blur-md border-t border-slate-100 rounded-t-3xl shadow-2xl transition-transform duration-500 ease-out flex flex-col p-6 max-h-[85%] overflow-y-auto ${
+            showTutorial ? 'translate-y-0' : 'translate-y-full'
+          }`}
+        >
+          {/* Accent Indicator bar */}
+          <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4" />
+          
+          <h3 className="text-xl font-bold text-slate-800 mb-1 flex items-center gap-2">
+            <span className={`${currentStep.color} font-extrabold text-2xl`}>✦</span>
+            {currentStep.title} Guide
+          </h3>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">
+            Tutorial Active
+          </p>
+
+          <div className="space-y-5 flex-1 mb-6">
+            {/* "How" Section */}
+            <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                How to do it
+              </h4>
+              <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                {currentStep.how}
+              </p>
+            </div>
+
+            {/* "Why" Section */}
+            <div className={`${currentStep.bgColor} p-4 rounded-2xl border border-slate-200/50`}>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 flex items-center gap-1.5">
+                <span className={`w-1.5 h-1.5 rounded-full ${currentStep.ringColor.replace('stroke-', 'bg-')}`} />
+                Why it works
+              </h4>
+              <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                {currentStep.why}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              initAudio();
+              setShowTutorial(false);
+              setIsActive(true);
+            }}
+            className={`w-full py-4 rounded-2xl font-bold text-white shadow-lg transition-all text-center text-white cursor-pointer ${
+              currentStep.id === 'piriformis' ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-200' :
+              currentStep.id === 'nerve-floss' ? 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200' :
+              currentStep.id === 'glute-bridges' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-200' :
+              'bg-teal-600 hover:bg-teal-700 shadow-teal-200'
+            }`}
+          >
+            Got it, let's go!
+          </button>
         </div>
       </div>
 
