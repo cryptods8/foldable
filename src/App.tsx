@@ -14,7 +14,7 @@ import {
 let audioCtx: AudioContext | null = null;
 const initAudio = () => {
   if (!audioCtx) {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContextClass = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     audioCtx = new AudioContextClass();
   }
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
