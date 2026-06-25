@@ -423,15 +423,15 @@ export default function App() {
               >
                 {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
               </button>
-              <span className="text-sm font-semibold bg-white/60 px-3 py-1 rounded-full text-slate-700">
+              <span className="text-sm font-semibold bg-white/60 px-3 py-1 rounded-full text-slate-700 compact-text-header">
                 Step {currentStepIndex + 1} of {ROUTINE.length}
               </span>
             </div>
           </div>
           
           {/* Timer Display */}
-          <div className="relative flex justify-center items-center py-4">
-            <svg className="w-64 h-64 transform -rotate-90">
+          <div className="relative flex justify-center items-center py-4 compact-timer-py">
+            <svg className="w-64 h-64 transform -rotate-90 compact-timer-svg" viewBox="0 0 256 256">
               {/* Background Ring */}
               <circle
                 cx="128"
@@ -456,10 +456,10 @@ export default function App() {
             </svg>
             
             <div className="absolute flex flex-col items-center justify-center pointer-events-none">
-              <div className={`mb-1 ${currentStep.color} w-20 h-20`}>
+              <div className={`mb-1 ${currentStep.color} w-20 h-20 compact-visualizer-box`}>
                 <Visualizer stepId={currentStep.id} timeLeft={timeLeft} duration={currentStep.duration} />
               </div>
-              <span className="text-4xl font-extrabold tabular-nums tracking-tight bg-white/40 px-3 py-0.5 rounded-xl backdrop-blur-sm -mt-3">
+              <span className="text-4xl font-extrabold tabular-nums tracking-tight bg-white/40 px-3 py-0.5 rounded-xl backdrop-blur-sm -mt-3 compact-text-timer">
                 {formatTime(timeLeft)}
               </span>
             </div>
@@ -467,9 +467,9 @@ export default function App() {
         </div>
 
         {/* Instructions */}
-        <div className="p-8">
-          <h2 className="text-2xl font-bold mb-3">{currentStep.title}</h2>
-          <p className="text-slate-600 leading-relaxed mb-8 min-h-[5rem]">
+        <div className="p-8 compact-body-p">
+          <h2 className="text-2xl font-bold mb-3 compact-text-title compact-title-mb">{currentStep.title}</h2>
+          <p className="text-slate-600 leading-relaxed mb-8 min-h-[5rem] compact-text-desc compact-desc-mb">
             {currentStep.description}
           </p>
 
@@ -485,7 +485,7 @@ export default function App() {
 
             <button 
               onClick={toggleTimer}
-              className={`w-20 h-20 flex items-center justify-center rounded-full shadow-lg text-white transition-transform hover:scale-105 active:scale-95 ${isActive ? 'bg-slate-800' : currentStep.bgColor.replace('bg-', 'bg-').replace('50', '500')}`}
+              className={`w-20 h-20 flex items-center justify-center rounded-full shadow-lg text-white transition-transform hover:scale-105 active:scale-95 compact-btn-main ${isActive ? 'bg-slate-800' : currentStep.bgColor.replace('bg-', 'bg-').replace('50', '500')}`}
               style={{ backgroundColor: isActive ? '#1e293b' : undefined }} // Fallback override
             >
               {isActive ? (
