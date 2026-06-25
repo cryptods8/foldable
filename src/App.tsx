@@ -506,7 +506,7 @@ export default function App() {
 
         {/* Sliding Onboarding/Tutorial Drawer */}
         <div 
-          className={`absolute inset-x-0 bottom-0 z-20 bg-white/95 backdrop-blur-md border-t border-slate-100 rounded-t-3xl shadow-2xl transition-transform duration-500 ease-out flex flex-col p-6 max-h-[85%] overflow-y-auto ${
+          className={`absolute inset-x-0 bottom-0 z-20 bg-white/95 backdrop-blur-md border-t border-slate-100 rounded-t-3xl shadow-2xl transition-transform duration-500 ease-out flex flex-col p-6 max-h-[85%] overflow-y-auto compact-drawer ${
             showTutorial ? 'translate-y-0' : 'translate-y-full'
           }`}
         >
@@ -521,7 +521,7 @@ export default function App() {
             Tutorial Active
           </p>
 
-          <div className="space-y-5 flex-1 mb-6">
+          <div className="space-y-5 flex-1 mb-6 compact-drawer-grid">
             {/* "How" Section */}
             <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 flex items-center gap-1.5">
@@ -551,7 +551,7 @@ export default function App() {
               setShowTutorial(false);
               setIsActive(true);
             }}
-            className={`w-full py-4 rounded-2xl font-bold text-white shadow-lg transition-all text-center text-white cursor-pointer ${
+            className={`w-full py-4 rounded-2xl font-bold text-white shadow-lg transition-all text-center text-white cursor-pointer compact-drawer-btn ${
               currentStep.id === 'piriformis' ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-200' :
               currentStep.id === 'nerve-floss' ? 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200' :
               currentStep.id === 'glute-bridges' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-200' :
@@ -564,7 +564,7 @@ export default function App() {
       </div>
 
       {/* Up Next Preview */}
-      <div className="max-w-md w-full mt-6">
+      <div className="max-w-md w-full mt-6 compact-footer-mt">
         <div className="flex gap-2">
           {ROUTINE.map((step, idx) => (
             <div 
