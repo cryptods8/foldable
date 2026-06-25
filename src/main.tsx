@@ -8,3 +8,16 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>
 );
+
+// Register service worker in production environments
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((reg) => {
+        console.log('ServiceWorker registration successful with scope: ', reg.scope);
+      })
+      .catch((err) => {
+        console.error('ServiceWorker registration failed: ', err);
+      });
+  });
+}

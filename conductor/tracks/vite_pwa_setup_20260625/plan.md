@@ -35,12 +35,12 @@ This plan outlines the specific steps required to initialize a local Vite develo
 
 ## Phase 3: PWA Scaffolding & Offline Manifest
 
-- [ ] Task: Set up Web Application Manifest
-    - [ ] Create `public/manifest.json` with standalone display settings, brand theme colors, and basic icon definitions
-- [ ] Task: Implement Offline Service Worker
-    - [ ] Create a basic service worker script `public/sw.js` to cache the index shell and script assets
-    - [ ] Add service worker registration block inside `src/main.tsx`
-- [ ] Task: Verify final local PWA builds
-    - [ ] Re-run full build compilation using `pnpm run build`
-    - [ ] Launch Vite's production preview server using `pnpm run preview` and manually verify offline loading
-- [ ] Task: Conductor - User Manual Verification 'PWA Scaffolding & Offline Manifest' (Protocol in workflow.md)
+- [x] Task: Set up Web Application Manifest
+    - [x] Create `public/manifest.json` with standalone display settings, brand theme colors, and basic icon definitions
+- [x] Task: Implement Offline Service Worker
+    - [x] Create a basic service worker script `public/sw.js` to cache the index shell and script assets
+    - [x] Add service worker registration block inside `src/main.tsx`
+- [x] Task: Verify final local PWA builds
+    - [x] Re-run full build compilation using `pnpm run build`
+    - [x] Launch Vite's production preview server using `pnpm run preview` and manually verify offline loading
+- [x] Task: Conductor - User Manual Verification 'PWA Scaffolding & Offline Manifest' (Consolidated)
