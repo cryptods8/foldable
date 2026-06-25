@@ -36,6 +36,6 @@ Morning Mobility is an interactive, guided stretching and physical therapy compa
 
 ## Application Format
 - **Progressive Web Application (PWA):**
-  - Fully responsive, mobile-first design optimized for touch screens and desktop viewports.
+  - Fully responsive, mobile-first design optimized for touch screens and desktop viewports, with dynamic height-based scaling to guarantee a flawless, scroll-free portrait experience on compact screens like the iPhone SE.
   - Offline-first support utilizing local storage and a service worker to cache essential assets, animations, and sound routines.
   - Installable directly to mobile home screens and desktops for instant, app-like access.
