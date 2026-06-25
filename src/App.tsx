@@ -394,12 +394,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 md:p-8 font-sans text-slate-800">
+    <div className="app-viewport bg-slate-50 p-4 font-sans text-slate-800">
       
-      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100 compact-container flex flex-col justify-between">
         {/* Header */}
-        <div className={`p-6 ${currentStep.bgColor} transition-colors duration-500`}>
-          <div className="flex justify-between items-center mb-6">
+        <div className={`p-6 ${currentStep.bgColor} transition-colors duration-500 compact-header-p`}>
+          <div className="flex justify-between items-center mb-6 compact-header-mb">
             <h1 className="font-bold text-slate-800 tracking-tight">Morning Mobility</h1>
             <div className="flex items-center gap-3">
               <button 
