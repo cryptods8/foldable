@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   Play, 
   Pause, 
@@ -11,15 +11,16 @@ import {
 } from 'lucide-react';
 
 // --- AUDIO HELPERS ---
-let audioCtx = null;
+let audioCtx: AudioContext | null = null;
 const initAudio = () => {
   if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    audioCtx = new AudioContextClass();
   }
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 };
 
-const playTone = (freq, type, duration) => {
+const playTone = (freq: number, type: OscillatorType, duration: number) => {
   if (!audioCtx) return;
   const oscillator = audioCtx.createOscillator();
   const gainNode = audioCtx.createGain();
@@ -90,13 +91,19 @@ const ROUTINE = [
 ];
 
 // --- VISUALIZATION COMPONENT ---
-const Visualizer = ({ stepId, timeLeft, duration }) => {
+interface VisualizerProps {
+  stepId: string;
+  timeLeft: number;
+  duration: number;
+}
+
+const Visualizer = ({ stepId, timeLeft, duration }: VisualizerProps) => {
   const commonProps = {
     fill: "none",
     stroke: "currentColor",
     strokeWidth: "5",
-    strokeLinecap: "round",
-    strokeLinejoin: "round"
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const
   };
 
   const FloorLine = () => (
@@ -219,7 +226,7 @@ export default function App() {
 
   // Timer Logic & Sound Triggers
   useEffect(() => {
-    let interval = null;
+    let interval: any = null;
 
     if (isActive && timeLeft > 0) {
       interval = setInterval(() => {
@@ -284,7 +291,7 @@ export default function App() {
     setIsFinished(false);
   };
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
