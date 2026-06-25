@@ -28,6 +28,11 @@ Morning Mobility is an interactive, guided stretching and physical therapy compa
 - **Customizable Session Controls:**
   - Start, pause, skip, and rewind routine steps.
   - Mute/unmute sound settings with clean, synthesized sound cues to signal halfway points and final step completion.
+- **Interactive Onboarding & Tutorial Guide:**
+  - Automatically enabled for first-time users to display a sliding overlay drawer before each exercise starts.
+  - Shows clear, actionable postural walkthrough cues ("How") and physiological/neural benefits ("Why") to build user confidence.
+  - Keeps the timer and routine paused until the user explicitly acknowledges and activates the exercise.
+  - Easily toggled on or off directly from the header via an interactive Help icon, persisting preferences locally.
 
 ## Application Format
 - **Progressive Web Application (PWA):**
