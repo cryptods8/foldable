@@ -1,0 +1,8 @@
+{
+  "track_id": "vps-deployment_20260626",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-06-26T10:08:00Z",
+  "updated_at": "2026-06-26T10:08:00Z",
+  "description": "Build and deploy on hetzner VPS, multiple projects there already running, using nginx. The project will live under \"foldable.onfc.xyz\" domain."
+}
