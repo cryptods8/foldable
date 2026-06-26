@@ -9,6 +9,11 @@ const DIST_PATH = path.join(__dirname, '../dist');
 app.use((req, res, next) => {
   const url = req.url;
   
+  // Set global CORS headers for all public static assets (images, SVGs, JS, CSS, manifests, etc.)
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   // Service Worker and Index.html must NOT be cached to avoid getting stuck with stale versions
   if (url === '/sw.js' || url === '/index.html' || url === '/') {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
@@ -18,13 +23,6 @@ app.use((req, res, next) => {
   } else {
     // Default fallback cache control
     res.setHeader('Cache-Control', 'public, max-age=3600');
-  }
-
-  // Set CORS headers for public manifests & Farcaster verification payloads
-  if (url.endsWith('.json') || url.includes('/.well-known/')) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
 
   next();
