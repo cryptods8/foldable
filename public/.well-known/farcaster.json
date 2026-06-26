@@ -6,7 +6,7 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "Morning Mobility",
+    "name": "Foldable",
     "iconUrl": "https://foldable.onfc.xyz/icon.png",
     "homeUrl": "https://foldable.onfc.xyz/",
     "imageUrl": "https://foldable.onfc.xyz/og-image.png",
@@ -20,7 +20,7 @@
     "tagline": "Loosen hips and lower back",
     "heroImageUrl": "https://foldable.onfc.xyz/og-image.png",
     "screenshotUrls": ["https://foldable.onfc.xyz/screenshot.png"],
-    "ogTitle": "Morning Mobility",
+    "ogTitle": "Foldable - Morning Mobility",
     "ogDescription": "Guided audio-paced stretches for deep hip and lower-back relief.",
     "ogImageUrl": "https://foldable.onfc.xyz/og-image.png"
   }

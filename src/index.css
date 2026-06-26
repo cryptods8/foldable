@@ -16,7 +16,7 @@
 }
 
 /* Height and width-based media query overrides for small/narrow devices (e.g., iPhone SE, narrow screens) */
-@media (max-width: 390px) {
+@media (max-width: 420px) {
   .app-viewport {
     padding: 0 !important;
   }
