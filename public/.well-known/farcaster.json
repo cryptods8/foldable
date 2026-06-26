@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwIn0",
+    "header": "eyJmaWQiOjExMTI0LCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4ZENjODlEZjVGYzhENDJDNTQ0MzM4ODUzMWFGMTU1MUUwRmJkNUNBZCJ9",
     "payload": "eyJkb21haW4iOiJmb2xkYWJsZS5vbmZjLnh5eiJ9",
-    "signature": "MHgwIn0"
+    "signature": "MskOOFyhOuWsjy1wZCSz4TVlABjorZDgcw4ea27Kt7ofo/ON9sniCpm81qriwKcsgvkvrH2NOGa2co50v+pHRxw="
   },
   "miniapp": {
     "version": "1",
@@ -12,6 +12,6 @@
     "imageUrl": "https://foldable.onfc.xyz/screenshot.png",
     "buttonTitle": "🧘‍♂️ Stretch",
     "splashImageUrl": "https://foldable.onfc.xyz/vite.svg",
-    "splashBackgroundColor": "#0d151c"
+    "splashBackgroundColor": "#f8fafc"
   }
 }

@@ -1,6 +1,7 @@
 {
   "short_name": "Foldable",
   "name": "Morning Mobility - Foldable",
+  "description": "A clinical, calming physical therapy and mobility companion for deep hip and lower back relief, engineered for a pain-free seated forward fold.",
   "icons": [
     {
       "src": "/vite.svg",
@@ -11,7 +12,7 @@
   ],
   "start_url": "/",
   "background_color": "#f8fafc",
-  "theme_color": "#1e293b",
+  "theme_color": "#f8fafc",
   "display": "standalone",
   "orientation": "portrait"
 }

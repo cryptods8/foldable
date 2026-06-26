@@ -16,7 +16,7 @@
 }
 
 /* Height and width-based media query overrides for small/narrow devices (e.g., iPhone SE, narrow screens) */
-@media (max-height: 680px), (max-width: 390px) {
+@media (max-width: 390px) {
   .app-viewport {
     padding: 0 !important;
   }
@@ -135,7 +135,7 @@
 }
 
 /* Deeper compression for ultra-short or ultra-narrow screens (e.g. iPhone SE with browser UI / 568px height, 320px width) */
-@media (max-height: 580px), (max-width: 340px) {
+@media (max-width: 340px) {
   .app-viewport {
     padding: 0 !important;
   }
