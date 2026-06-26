@@ -8,7 +8,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Build and deploy on hetzner VPS, multiple projects there already running, using nginx. The project will live under "foldable.onfc.xyz" domain.**
 *Link: [./tracks/vps-deployment_20260626/](./tracks/vps-deployment_20260626/)*
 
----
-
-- [x] **Track: Finishing Farcaster setup - app is deployed at foldable.onfc.xyz, now it's time to add manifest and proper metadata (also for opengraph)**
-*Link: [./tracks/farcaster-manifest-meta_20260626/](./tracks/farcaster-manifest-meta_20260626/)*
