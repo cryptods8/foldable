@@ -1,0 +1,8 @@
+{
+  "track_id": "farcaster-support_20260626",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-06-26T09:58:00Z",
+  "updated_at": "2026-06-26T09:58:00Z",
+  "description": "Farcaster mini app support based on @[farcaster-llms-full.txt]"
+}
