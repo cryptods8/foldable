@@ -34,3 +34,6 @@
     - [x] Wire up **Share Completion** button to trigger `sdk.actions.composeCast()` with dynamic streak info
     - [x] Wire up **Add to Farcaster** button to trigger `sdk.actions.addMiniApp()`
 - [x] Task: Conductor - User Manual Verification 'Phase 4: UI Controls & Functional Actions' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions c7e538c
