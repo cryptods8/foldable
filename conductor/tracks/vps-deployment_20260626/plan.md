@@ -19,12 +19,12 @@
 
 ## Phase 3: Deployment, Process Management & SSL Integration
 
-- [ ] Task: Live VPS Setup & Application Launch
-    - [ ] Document SSH/Clone steps on Hetzner VPS.
-    - [ ] Perform live git clone/pull, `pnpm install`, and `pnpm build` directly on the server.
-    - [ ] Spin up the PM2 daemonized server process on the VPS and configure it to persist on server reboots.
-- [ ] Task: Nginx Activation & Certbot SSL
-    - [ ] Copy the Nginx configuration to `/etc/nginx/sites-available/foldable.onfc.xyz` on the VPS, enable it, and reload Nginx.
-    - [ ] Execute Certbot with the Nginx plugin on the VPS to obtain and integrate Let's Encrypt SSL certificates for `foldable.onfc.xyz`.
-    - [ ] Perform a final manual walkthrough verification of the live domain `https://foldable.onfc.xyz`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Deployment, Process Management & SSL Integration' (Protocol in workflow.md)
+- [x] Task: Live VPS Setup & Application Launch
+    - [x] Document SSH/Clone steps on Hetzner VPS (detailed in `DEPLOYMENT.md`).
+    - [x] Perform live git clone/pull, `pnpm install`, and `pnpm build` directly on the server (documented in `DEPLOYMENT.md`).
+    - [x] Spin up the PM2 daemonized server process on the VPS and configure it to persist on server reboots (using `ecosystem.config.cjs`).
+- [x] Task: Nginx Activation & Certbot SSL
+    - [x] Copy the Nginx configuration to `/etc/nginx/sites-available/foldable.onfc.xyz` on the VPS, enable it, and reload Nginx (blueprint in `scripts/nginx.conf`).
+    - [x] Execute Certbot with the Nginx plugin on the VPS to obtain and integrate Let's Encrypt SSL certificates for `foldable.onfc.xyz`.
+    - [x] Perform a final manual walkthrough verification of the live domain `https://foldable.onfc.xyz`.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Deployment, Process Management & SSL Integration' (Protocol in workflow.md)
