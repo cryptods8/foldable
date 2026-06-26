@@ -20,3 +20,9 @@ This document maps out the specific technologies, frameworks, and libraries that
 - **Progressive Web Application (PWA):**
   - Web Manifest (`manifest.json`) defines installability, custom branding colors, and app icons.
   - Responsive breakpoints tailored for mobile layout viewports (e.g., iPhone/Android sizes on the floor) as well as larger desktop monitors.
+
+## 5. Server & Process Management (VPS Deployment)
+- **Node.js / Express Server:** Lightweight static file server configured to host the static build and handle single-page application (SPA) routing with customized cache-control headers.
+- **PM2 Process Manager:** Process manager used on the VPS to run, daemonize, and reload the server process, ensuring high availability and automatic startup on server reboots.
+- **Nginx Reverse Proxy:** Serves as the primary public web server and reverse proxy, routing incoming traffic from `foldable.onfc.xyz` to the local Node.js port, implementing compression and performance headers.
+- **Certbot (Let's Encrypt):** Utilized to obtain and automatically renew SSL/TLS certificates for the production domain, enforcing secure HTTPS redirection.
