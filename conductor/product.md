@@ -36,7 +36,7 @@ Morning Mobility is an interactive, guided stretching and physical therapy compa
 
 ## Application Format
 - **Progressive Web Application (PWA) & Farcaster Mini App:**
-  - Fully responsive, mobile-first design optimized for touch screens, desktop viewports, and inline webviews inside Farcaster client feeds, with dynamic height-based scaling to guarantee a flawless, scroll-free portrait experience on compact screens like the iPhone SE.
+  - Fully responsive, mobile-first design optimized for touch screens, desktop viewports, and inline webviews inside Farcaster client feeds, with dynamic width- and height-based scaling to guarantee a flawless, scroll-free portrait experience on compact screens like the iPhone SE, as well as tall, narrow aspect-ratio displays.
   - Offline-first support utilizing local storage and a service worker to cache essential assets, animations, and sound routines.
   - Installable directly to mobile home screens, desktops, or bookmarks within Farcaster client interfaces for instant, app-like access.
   - **Production Deployment:** Hosted securely on a Hetzner VPS under the domain [foldable.onfc.xyz](https://foldable.onfc.xyz), fronted by Nginx reverse proxy and SSL certificates.
