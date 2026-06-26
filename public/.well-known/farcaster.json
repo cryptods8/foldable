@@ -6,12 +6,22 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "Foldable",
-    "iconUrl": "https://foldable.onfc.xyz/vite.svg",
+    "name": "Morning Mobility",
+    "iconUrl": "https://foldable.onfc.xyz/icon.png",
     "homeUrl": "https://foldable.onfc.xyz/",
-    "imageUrl": "https://foldable.onfc.xyz/screenshot.png",
-    "buttonTitle": "Stretch",
-    "splashImageUrl": "https://foldable.onfc.xyz/vite.svg",
-    "splashBackgroundColor": "#f8fafc"
+    "imageUrl": "https://foldable.onfc.xyz/og-image.png",
+    "buttonTitle": "🧘‍♂️ Stretch",
+    "splashImageUrl": "https://foldable.onfc.xyz/splash.png",
+    "splashBackgroundColor": "#f8fafc",
+    "subtitle": "Pain-free seated forward fold",
+    "description": "A calm, clinical mobility companion that guides you through four audio-paced stretches for deep hip and lower-back relief, toward a pain-free seated forward fold.",
+    "primaryCategory": "health-fitness",
+    "tags": ["mobility", "stretching", "wellness", "hips", "yoga"],
+    "tagline": "Unfold tight hips & low back",
+    "heroImageUrl": "https://foldable.onfc.xyz/og-image.png",
+    "screenshotUrls": ["https://foldable.onfc.xyz/screenshot.png"],
+    "ogTitle": "Morning Mobility",
+    "ogDescription": "Guided audio-paced stretches for deep hip and lower-back relief.",
+    "ogImageUrl": "https://foldable.onfc.xyz/og-image.png"
   }
 }

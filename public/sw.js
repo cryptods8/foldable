@@ -1,8 +1,9 @@
-const CACHE_NAME = 'mobility-v1';
+const CACHE_NAME = 'mobility-v2';
 const ASSETS = [
   '/',
   '/index.html',
   '/vite.svg',
+  '/icon-192.png',
   '/manifest.json'
 ];
 
