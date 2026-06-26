@@ -6,11 +6,11 @@
   },
   "miniapp": {
     "version": "1",
-    "name": "Morning Mobility",
+    "name": "Foldable",
     "iconUrl": "https://foldable.onfc.xyz/vite.svg",
     "homeUrl": "https://foldable.onfc.xyz/",
     "imageUrl": "https://foldable.onfc.xyz/screenshot.png",
-    "buttonTitle": "🧘‍♂️ Stretch",
+    "buttonTitle": "Stretch",
     "splashImageUrl": "https://foldable.onfc.xyz/vite.svg",
     "splashBackgroundColor": "#f8fafc"
   }
