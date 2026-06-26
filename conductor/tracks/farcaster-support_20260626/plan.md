@@ -1,10 +1,10 @@
 # Implementation Plan: Farcaster Mini App Support
 
 ## Phase 1: Environment Setup & SDK Installation
-- [ ] Task: Install `@farcaster/miniapp-sdk` and update dev configuration
-    - [ ] Run `pnpm add @farcaster/miniapp-sdk` to install the SDK
-    - [ ] Run `pnpm run build` to verify compatibility and successful compilation
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Environment Setup & SDK Installation' (Protocol in workflow.md)
+- [x] Task: Install `@farcaster/miniapp-sdk` and update dev configuration
+    - [x] Run `pnpm add @farcaster/miniapp-sdk` to install the SDK
+    - [x] Run `pnpm run build` to verify compatibility and successful compilation
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Environment Setup & SDK Installation' (Protocol in workflow.md)
 
 ## Phase 2: Static Meta Configurations & Manifest Integration
 - [ ] Task: Define the Farcaster Manifest Schema
