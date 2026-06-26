@@ -11,5 +11,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Mobile layout fixes - rely on width more than height for displays that are narrow and tall**
+- [x] **Track: Mobile layout fixes - rely on width more than height for displays that are narrow and tall**
 *Link: [./tracks/narrow-tall-displays_20260626/](./tracks/narrow-tall-displays_20260626/)*

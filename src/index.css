@@ -15,8 +15,8 @@
   justify-content: center;
 }
 
-/* Height-based media query overrides for small devices (e.g., iPhone SE) */
-@media (max-height: 680px) {
+/* Height and width-based media query overrides for small/narrow devices (e.g., iPhone SE, narrow screens) */
+@media (max-height: 680px), (max-width: 390px) {
   .app-viewport {
     padding: 0 !important;
   }
@@ -134,8 +134,8 @@
   }
 }
 
-/* Deeper height compression for ultra-short screens (e.g. iPhone SE with browser UI / 568px height) */
-@media (max-height: 580px) {
+/* Deeper compression for ultra-short or ultra-narrow screens (e.g. iPhone SE with browser UI / 568px height, 320px width) */
+@media (max-height: 580px), (max-width: 340px) {
   .app-viewport {
     padding: 0 !important;
   }
