@@ -540,7 +540,7 @@ export default function App() {
                   try {
                     await sdk.actions.composeCast({
                       text: "I just completed my 🧘‍♂️ Morning Mobility stretch routine on Foldable! Hips and lower back are feeling spacious and restored. #Foldable",
-                      embeds: ["https://foldable.app/"]
+                      embeds: ["https://foldable.onfc.xyz/"]
                     });
                   } catch (e) {
                     console.error("Error composing cast:", e);

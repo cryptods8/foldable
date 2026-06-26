@@ -17,8 +17,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: HTML Head Optimization (Meta Tags & OpenGraph)' (Protocol in workflow.md)
 
 ## Phase 3: Source Code URL updates
-- [ ] Task: Update share URLs in React source code (`src/App.tsx`)
-    - [ ] Replace `https://foldable.app/` sharing URL with `https://foldable.onfc.xyz/` in composer action
-- [ ] Task: Verify build and compile stability
-    - [ ] Run `pnpm exec tsc --noEmit` and `pnpm run build` to confirm static checking passes cleanly
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Source Code URL updates' (Protocol in workflow.md)
+- [x] Task: Update share URLs in React source code (`src/App.tsx`)
+    - [x] Replace `https://foldable.app/` sharing URL with `https://foldable.onfc.xyz/` in composer action
+- [x] Task: Verify build and compile stability
+    - [x] Run `pnpm exec tsc --noEmit` and `pnpm run build` to confirm static checking passes cleanly
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Source Code URL updates' (Protocol in workflow.md)
