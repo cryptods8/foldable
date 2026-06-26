@@ -11,11 +11,11 @@
 
 ## Phase 2: VPS Preparation & Nginx Configuration
 
-- [ ] Task: Define Nginx Configuration & VPS Folder Structure
-    - [ ] Create a blueprint Nginx configuration file `nginx.conf` for `foldable.onfc.xyz` that forwards traffic to port `3040` with correct SPA clean URL rewriting.
-    - [ ] Add caching rules in the Nginx blueprint (e.g., no-cache for index.html/service-worker, high cache headers for versioned assets).
-    - [ ] Prepare the VPS directory structure guidelines (e.g., `/var/www/foldable`).
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: VPS Preparation & Nginx Configuration' (Protocol in workflow.md)
+- [x] Task: Define Nginx Configuration & VPS Folder Structure
+    - [x] Create a blueprint Nginx configuration file `nginx.conf` (located at `scripts/nginx.conf`) for `foldable.onfc.xyz` that forwards traffic to port `3040` with correct SPA clean URL rewriting.
+    - [x] Add caching rules in the Nginx blueprint (e.g., no-cache for index.html/service-worker, high cache headers for versioned assets).
+    - [x] Prepare the VPS directory structure guidelines (e.g., `/var/www/foldable` detailed in `DEPLOYMENT.md`).
+- [x] Task: Conductor - User Manual Verification 'Phase 2: VPS Preparation & Nginx Configuration' (Protocol in workflow.md)
 
 ## Phase 3: Deployment, Process Management & SSL Integration
 
