@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3040;
 const DIST_PATH = path.join(__dirname, '../dist');
 
-// Middleware for custom headers (Cache-Control)
+// Middleware for custom headers (Cache-Control & CORS)
 app.use((req, res, next) => {
   const url = req.url;
   
@@ -19,13 +19,22 @@ app.use((req, res, next) => {
     // Default fallback cache control
     res.setHeader('Cache-Control', 'public, max-age=3600');
   }
+
+  // Set CORS headers for public manifests & Farcaster verification payloads
+  if (url.endsWith('.json') || url.includes('/.well-known/')) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+
   next();
 });
 
-// Serve static assets from Vite's build directory
+// Serve static assets from Vite's build directory (allowing dotfiles for .well-known/)
 app.use(express.static(DIST_PATH, {
   etag: true,
-  lastModified: true
+  lastModified: true,
+  dotfiles: 'allow'
 }));
 
 // SPA Routing: Redirect any unmatched clean URLs back to index.html
