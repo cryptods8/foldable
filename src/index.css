@@ -17,13 +17,30 @@
 
 /* Height-based media query overrides for small devices (e.g., iPhone SE) */
 @media (max-height: 680px) {
+  .app-viewport {
+    padding: 0 !important;
+  }
   /* Compression of container and spaces */
   .compact-container {
-    max-height: 96vh !important;
-    padding: 1rem !important;
+    width: 100vw !important;
+    max-width: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
   .compact-header-p {
-    padding: 1rem !important; /* p-4 instead of p-6 */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    flex-grow: 1 !important;
+    padding-top: calc(1.5rem + env(safe-area-inset-top, 0px)) !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    padding-bottom: 2rem !important;
+    border-radius: 0 0 24px 24px !important;
   }
   .compact-header-mb {
     margin-bottom: 0.75rem !important; /* mb-3 instead of mb-6 */
@@ -31,9 +48,18 @@
   .compact-timer-py {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-grow: 1 !important;
   }
   .compact-body-p {
-    padding: 1.25rem !important; /* p-5 instead of p-8 */
+    flex-shrink: 0 !important;
+    padding-top: 1rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)) !important;
   }
   .compact-title-mb {
     margin-bottom: 0.5rem !important; /* mb-2 instead of mb-3 */
@@ -47,12 +73,14 @@
 
   /* Sizing overrides */
   .compact-timer-svg {
-    width: 11rem !important; /* 176px (w-44) instead of 16rem (w-64) */
-    height: 11rem !important; /* 176px (h-44) */
+    width: clamp(9.5rem, 28vh, 13.5rem) !important;
+    height: clamp(9.5rem, 28vh, 13.5rem) !important;
   }
   .compact-visualizer-box {
-    width: 3.5rem !important; /* 56px (w-14) instead of 5rem (w-20) */
-    height: 3.5rem !important; /* 56px (h-14) */
+    width: 38% !important;
+    height: 38% !important;
+    max-width: 5.5rem !important;
+    max-height: 5.5rem !important;
   }
   .compact-btn-main {
     width: 4rem !important; /* w-16 instead of w-20 */
@@ -108,12 +136,29 @@
 
 /* Deeper height compression for ultra-short screens (e.g. iPhone SE with browser UI / 568px height) */
 @media (max-height: 580px) {
+  .app-viewport {
+    padding: 0 !important;
+  }
   .compact-container {
-    max-height: 98vh !important;
-    padding: 0.75rem !important;
+    width: 100vw !important;
+    max-width: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
   .compact-header-p {
-    padding: 0.75rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    flex-grow: 1 !important;
+    padding-top: calc(1.25rem + env(safe-area-inset-top, 0px)) !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-bottom: 1.5rem !important;
+    border-radius: 0 0 20px 20px !important;
   }
   .compact-header-mb {
     margin-bottom: 0.5rem !important;
@@ -121,9 +166,18 @@
   .compact-timer-py {
     padding-top: 0.25rem !important;
     padding-bottom: 0.25rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-grow: 1 !important;
   }
   .compact-body-p {
-    padding: 1rem !important;
+    flex-shrink: 0 !important;
+    padding-top: 0.75rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)) !important;
   }
   .compact-title-mb {
     margin-bottom: 0.25rem !important;
@@ -136,13 +190,20 @@
     line-height: 1.125rem !important;
     min-height: 3.25rem !important;
   }
+  .compact-text-header {
+    font-size: 0.75rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-top: 0.125rem !important;
+    padding-bottom: 0.125rem !important;
+  }
   .compact-timer-svg {
-    width: 9rem !important; /* 144px (w-36) */
-    height: 9rem !important;
+    width: clamp(8.5rem, 26vh, 10.5rem) !important;
+    height: clamp(8.5rem, 26vh, 10.5rem) !important;
   }
   .compact-visualizer-box {
-    width: 2.75rem !important; /* 44px */
-    height: 2.75rem !important;
+    width: 38% !important;
+    height: 38% !important;
   }
   .compact-text-timer {
     font-size: 1.5rem !important; /* text-2xl */

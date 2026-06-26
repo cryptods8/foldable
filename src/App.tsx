@@ -261,6 +261,19 @@ const Visualizer = ({ stepId, timeLeft, duration }: VisualizerProps) => {
   return null;
 };
 
+interface FarcasterUser {
+  pfpUrl?: string;
+  displayName?: string;
+  username?: string;
+}
+
+interface FarcasterContext {
+  user?: FarcasterUser;
+  client?: {
+    added?: boolean;
+  };
+}
+
 export default function App() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(ROUTINE[0].duration);
@@ -270,7 +283,7 @@ export default function App() {
 
   // Farcaster Mini App Integration States
   const [isFarcaster, setIsFarcaster] = useState<boolean>(false);
-  const [farcasterContext, setFarcasterContext] = useState<any>(null);
+  const [farcasterContext, setFarcasterContext] = useState<FarcasterContext | null>(null);
 
   // Initialize Farcaster SDK on mount
   useEffect(() => {
