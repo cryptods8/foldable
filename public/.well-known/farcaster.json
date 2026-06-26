@@ -1,0 +1,17 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwIn0",
+    "payload": "eyJkb21haW4iOiJmb2xkYWJsZS5hcHAifQ",
+    "signature": "MHgwIn0"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Morning Mobility",
+    "iconUrl": "https://foldable.app/vite.svg",
+    "homeUrl": "https://foldable.app/",
+    "imageUrl": "https://foldable.app/screenshot.png",
+    "buttonTitle": "🧘‍♂️ Stretch",
+    "splashImageUrl": "https://foldable.app/vite.svg",
+    "splashBackgroundColor": "#0d151c"
+  }
+}

@@ -7,13 +7,13 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Environment Setup & SDK Installation' (Protocol in workflow.md)
 
 ## Phase 2: Static Meta Configurations & Manifest Integration
-- [ ] Task: Define the Farcaster Manifest Schema
-    - [ ] Create `public/.well-known/farcaster.json` serving directory
-    - [ ] Populate `farcaster.json` with app details, logo url, calming green theme background, and placeholder signature
-- [ ] Task: Embed Farcaster meta tags
-    - [ ] Edit `index.html` to inject `fc:miniapp` and legacy `fc:frame` meta headers
-    - [ ] Verify static file serving via dev preview
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Static Meta Configurations & Manifest Integration' (Protocol in workflow.md)
+- [x] Task: Define the Farcaster Manifest Schema
+    - [x] Create `public/.well-known/farcaster.json` serving directory
+    - [x] Populate `farcaster.json` with app details, logo url, calming green theme background, and placeholder signature
+- [x] Task: Embed Farcaster meta tags
+    - [x] Edit `index.html` to inject `fc:miniapp` and legacy `fc:frame` meta headers
+    - [x] Verify static file serving via dev preview
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Static Meta Configurations & Manifest Integration' (Protocol in workflow.md)
 
 ## Phase 3: Core SDK Initialization & Ready Lifecycle
 - [ ] Task: Initialize Farcaster SDK on launch
