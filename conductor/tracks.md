@@ -10,5 +10,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Finishing Farcaster setup - app is deployed at foldable.onfc.xyz, now it's time to add manifest and proper metadata (also for opengraph)**
+- [x] **Track: Finishing Farcaster setup - app is deployed at foldable.onfc.xyz, now it's time to add manifest and proper metadata (also for opengraph)**
 *Link: [./tracks/farcaster-manifest-meta_20260626/](./tracks/farcaster-manifest-meta_20260626/)*
