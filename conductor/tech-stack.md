@@ -14,6 +14,7 @@ This document maps out the specific technologies, frameworks, and libraries that
 - **Web Audio API:** Native browser API used to synthesize high-quality tone cues on-the-fly (with envelope gain ramps and custom oscillator wave types) to support a distraction-free, screen-free workout without downloading heavy audio files.
 - **LocalStorage API:** Provides zero-dependency, permanent local persistence to track calendar dates, daily streaks, and completion sessions.
 - **Service Worker API:** Core PWA technology to intercept network requests, cache the React single-page shell, styles, and assets, enabling instant, completely offline functionality.
+- **Farcaster Mini App SDK (@farcaster/miniapp-sdk):** Deep client integration library for Frame v2, facilitating native initialization (`ready`), custom cast composition, and client navigation bookmarks.
 
 ## 4. Packaging & App Delivery
 - **Progressive Web Application (PWA):**
