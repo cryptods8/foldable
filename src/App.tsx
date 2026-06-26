@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { sdk } from '@farcaster/miniapp-sdk';
 import { 
   Play, 
   Pause, 
@@ -50,6 +51,14 @@ const playCompleteSound = () => {
   setTimeout(() => playTone(600, 'sine', 0.4), 400);
 };
 
+const playTickSound = () => {
+  playTone(523.25, 'sine', 0.04);
+};
+
+const playStartSound = () => {
+  playTone(659.25, 'sine', 0.15);
+};
+
 interface RoutineStep {
   id: string;
   title: string;
@@ -59,6 +68,9 @@ interface RoutineStep {
   color: string;
   ringColor: string;
   bgColor: string;
+  btnBg: string;       // Static button background
+  btnHoverBg: string;  // Static button hover background
+  barBg: string;       // Static progress bar background
   how: string;
   why: string;
 }
@@ -73,6 +85,9 @@ const ROUTINE: RoutineStep[] = [
     color: 'text-blue-500',
     ringColor: 'stroke-blue-500',
     bgColor: 'bg-blue-50',
+    btnBg: 'bg-blue-600',
+    btnHoverBg: 'hover:bg-blue-700',
+    barBg: 'bg-blue-500',
     how: 'Sit on the floor. Place a massage ball under your right glute. Cross your right ankle over your left knee. Rest weight on a tender spot. Switch sides halfway (at 30s).',
     why: 'Releasing the piriformis muscle reduces deep glute tightness, relieves pressure on the sciatic nerve (which runs directly underneath or through the muscle), and improves external hip rotation, preparing your hips for pelvic hinging.'
   },
@@ -85,6 +100,9 @@ const ROUTINE: RoutineStep[] = [
     color: 'text-indigo-500',
     ringColor: 'stroke-indigo-500',
     bgColor: 'bg-indigo-50',
+    btnBg: 'bg-indigo-600',
+    btnHoverBg: 'hover:bg-indigo-700',
+    barBg: 'bg-indigo-500',
     how: 'Sit on a chair, slump mid-back, tuck chin. Slowly straighten right leg while looking UP. Bend knee while tucking chin DOWN. Smooth motions. Switch legs at 30s.',
     why: 'Nerve flossing (neural gliding) gently stretches and releases tension along the sciatic nerve pathway. Rather than stretching a muscle, it helps the nerve slide smoothly through its surrounding tissues, reducing neural tightness and lower back stiffness.'
   },
@@ -96,6 +114,9 @@ const ROUTINE: RoutineStep[] = [
     color: 'text-purple-500',
     ringColor: 'stroke-purple-500',
     bgColor: 'bg-purple-50',
+    btnBg: 'bg-purple-600',
+    btnHoverBg: 'hover:bg-purple-700',
+    barBg: 'bg-purple-500',
     how: 'Lie on your back, knees bent. Drive through heels to lift hips. Squeeze glutes hard at the top for 1 second, then lower slowly. Repeat for 60 seconds.',
     why: 'Strengthening the glutes provides reciprocal inhibition to the hip flexors and hamstrings, causing them to naturally relax and lengthen. It also stabilizes the pelvis and lower back, facilitating a safer, deeper hip hinge during forward folds.'
   },
@@ -107,6 +128,9 @@ const ROUTINE: RoutineStep[] = [
     color: 'text-teal-500',
     ringColor: 'stroke-teal-500',
     bgColor: 'bg-teal-50',
+    btnBg: 'bg-teal-600',
+    btnHoverBg: 'hover:bg-teal-700',
+    barBg: 'bg-teal-500',
     how: 'Sit on a yoga block/book. Bend knees generously. Hinge at hips to glue your belly to your thighs. Slowly slide heels out until you feel a stretch, without losing belly contact.',
     why: 'Elevating the pelvis tilts it forward, encouraging a true hip hinge rather than rounding the lower back. Keeping the belly in contact with the thighs ensures your lumbar spine remains protected and straight, shifting the entire stretch into the hamstrings and calves where it belongs.'
   }
@@ -244,6 +268,36 @@ export default function App() {
   const [isFinished, setIsFinished] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
 
+  // Farcaster Mini App Integration States
+  const [isFarcaster, setIsFarcaster] = useState<boolean>(false);
+  const [farcasterContext, setFarcasterContext] = useState<any>(null);
+
+  // Initialize Farcaster SDK on mount
+  useEffect(() => {
+    const initFarcaster = async () => {
+      try {
+        console.log("Initializing Farcaster SDK...");
+        const context = await sdk.context;
+        setFarcasterContext(context);
+        setIsFarcaster(true);
+        console.log("Farcaster SDK Context loaded:", context);
+      } catch (err) {
+        console.warn("Farcaster SDK context could not be loaded (likely running in regular browser):", err);
+        setIsFarcaster(false);
+      } finally {
+        try {
+          // Hide Farcaster native splash screen
+          await sdk.actions.ready();
+          console.log("Farcaster ready signal completed.");
+        } catch (e) {
+          console.warn("Could not call sdk.actions.ready() (likely running in regular browser):", e);
+        }
+      }
+    };
+
+    initFarcaster();
+  }, []);
+
   // Tutorial Mode & Onboarding States
   const [tutorialMode, setTutorialMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('foldable_tutorial_mode');
@@ -253,23 +307,59 @@ export default function App() {
     const saved = localStorage.getItem('foldable_tutorial_mode');
     return saved !== null ? saved === 'true' : true;
   });
+  const [dismissedSteps, setDismissedSteps] = useState<string[]>([]);
+
+  const [isPreparing, setIsPreparing] = useState(false);
+  const [prepareTime, setPrepareTime] = useState(3);
 
   const currentStep = ROUTINE[currentStepIndex];
 
   const toggleTutorialMode = () => {
     initAudio();
-    setTutorialMode((prev) => {
-      const next = !prev;
-      localStorage.setItem('foldable_tutorial_mode', String(next));
-      if (!next) {
-        setShowTutorial(false);
-      } else {
-        setShowTutorial(true);
-        setIsActive(false);
-      }
-      return next;
-    });
+    setIsPreparing(false);
+    
+    if (showTutorial) {
+      setShowTutorial(false);
+      setTutorialMode(false);
+      localStorage.setItem('foldable_tutorial_mode', 'false');
+    } else {
+      setShowTutorial(true);
+      setTutorialMode(true);
+      localStorage.setItem('foldable_tutorial_mode', 'true');
+      setIsActive(false);
+    }
   };
+
+  // Preparation Timer Logic (3-second countdown)
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    if (isPreparing && prepareTime > 0) {
+      interval = setInterval(() => {
+        setPrepareTime((time) => {
+          const nextTime = time - 1;
+          if (soundEnabled) {
+            if (nextTime > 0) {
+              playTickSound();
+            } else {
+              playStartSound();
+            }
+          }
+          if (nextTime === 0) {
+            setIsPreparing(false);
+            setIsActive(true);
+          }
+          return nextTime;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isPreparing, prepareTime, soundEnabled]);
 
   // Timer Logic & Sound Triggers
   useEffect(() => {
@@ -312,11 +402,21 @@ export default function App() {
   }, [isActive, timeLeft, currentStepIndex, soundEnabled, currentStep]);
 
   const handleNext = useCallback(() => {
+    setIsPreparing(false);
     if (currentStepIndex < ROUTINE.length - 1) {
-      setCurrentStepIndex((prev) => prev + 1);
-      setTimeLeft(ROUTINE[currentStepIndex + 1].duration);
-      if (tutorialMode) {
+      const nextStepIndex = currentStepIndex + 1;
+      const nextStep = ROUTINE[nextStepIndex];
+      setCurrentStepIndex(nextStepIndex);
+      setTimeLeft(nextStep.duration);
+      
+      // Only show the tutorial overlay if setting is enabled and not already dismissed for that step
+      if (tutorialMode && !dismissedSteps.includes(nextStep.id)) {
         setShowTutorial(true);
+        setIsActive(false);
+      } else {
+        setShowTutorial(false);
+        setIsPreparing(true);
+        setPrepareTime(3);
         setIsActive(false);
       }
     } else {
@@ -327,15 +427,29 @@ export default function App() {
       localStorage.setItem('foldable_tutorial_mode', 'false');
       setShowTutorial(false);
     }
-  }, [currentStepIndex, tutorialMode]);
+  }, [currentStepIndex, tutorialMode, dismissedSteps]);
 
   const handlePrev = () => {
-    if (currentStepIndex > 0) {
-      setCurrentStepIndex((prev) => prev - 1);
-      setTimeLeft(ROUTINE[currentStepIndex - 1].duration);
-      if (tutorialMode) {
+    setIsPreparing(false);
+    const currentDuration = ROUTINE[currentStepIndex].duration;
+    
+    if (timeLeft < currentDuration) {
+      // Rewind to the beginning of current step and pause
+      setTimeLeft(currentDuration);
+      setIsActive(false);
+    } else if (currentStepIndex > 0) {
+      // Navigate to previous step and pause
+      const prevStepIndex = currentStepIndex - 1;
+      const prevStep = ROUTINE[prevStepIndex];
+      setCurrentStepIndex(prevStepIndex);
+      setTimeLeft(prevStep.duration);
+      setIsActive(false);
+      
+      // Only show tutorial if in tutorialMode and not dismissed yet
+      if (tutorialMode && !dismissedSteps.includes(prevStep.id)) {
         setShowTutorial(true);
-        setIsActive(false);
+      } else {
+        setShowTutorial(false);
       }
     }
   };
@@ -345,8 +459,15 @@ export default function App() {
     if (isFinished) {
       resetRoutine();
     } else if (showTutorial) {
+      // Mark current step tutorial as dismissed so it won't pop up again
+      if (!dismissedSteps.includes(currentStep.id)) {
+        setDismissedSteps((prev) => [...prev, currentStep.id]);
+      }
       setShowTutorial(false);
-      setIsActive(true);
+      setIsPreparing(true);
+      setPrepareTime(3);
+    } else if (isPreparing) {
+      setIsPreparing(false);
     } else {
       setIsActive(!isActive);
     }
@@ -357,6 +478,9 @@ export default function App() {
     setTimeLeft(ROUTINE[0].duration);
     setIsActive(false);
     setIsFinished(false);
+    setIsPreparing(false);
+    setPrepareTime(3);
+    setDismissedSteps([]); // Clear dismissed state for a fresh routine run
     if (tutorialMode) {
       setShowTutorial(true);
     }
@@ -371,19 +495,69 @@ export default function App() {
   // SVG Ring calculation
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
-  const progressPercentage = isFinished ? 1 : 1 - (timeLeft / currentStep.duration);
-  const strokeDashoffset = circumference - progressPercentage * circumference;
 
   if (isFinished) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans text-slate-800">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center border border-slate-100">
-          <CheckCircle className="w-24 h-24 text-green-500 mx-auto mb-6" />
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-sm p-8 text-center border border-slate-100">
+          <CheckCircle className="w-20 h-24 text-green-500 mx-auto mb-6" />
           <h1 className="text-3xl font-bold text-slate-800 mb-2">Routine Complete!</h1>
-          <p className="text-slate-500 mb-8">You're one step closer to a perfect seated forward fold. Have a great day!</p>
+          <p className="text-slate-500 mb-8 font-medium">Your movement practice for today is complete. Your hips and lower back are now more spacious and restored.</p>
+          
+          {isFarcaster && farcasterContext?.user && (
+            <div className="flex items-center justify-center gap-3 mb-6 bg-slate-50 p-3 rounded-2xl border border-slate-100/60 max-w-xs mx-auto">
+              {farcasterContext.user.pfpUrl && (
+                <img 
+                  src={farcasterContext.user.pfpUrl} 
+                  alt={farcasterContext.user.displayName || farcasterContext.user.username} 
+                  className="w-10 h-10 rounded-full border border-slate-200"
+                />
+              )}
+              <div className="text-left">
+                <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Farcaster User</p>
+                <p className="text-sm font-bold text-slate-700 leading-tight">{farcasterContext.user.displayName || farcasterContext.user.username}</p>
+              </div>
+            </div>
+          )}
+
+          {isFarcaster && (
+            <div className="flex flex-col gap-3 mb-6">
+              <button 
+                onClick={async () => {
+                  try {
+                    await sdk.actions.composeCast({
+                      text: "I just completed my 🧘‍♂️ Morning Mobility stretch routine on Foldable! Hips and lower back are feeling spacious and restored. #Foldable",
+                      embeds: ["https://foldable.app/"]
+                    });
+                  } catch (e) {
+                    console.error("Error composing cast:", e);
+                  }
+                }}
+                className="flex items-center justify-center w-full gap-2 bg-teal-600 hover:bg-teal-700 text-white py-3.5 rounded-xl font-semibold transition-colors cursor-pointer shadow-sm shadow-teal-600/10"
+              >
+                Share Completion on Farcaster
+              </button>
+
+              {!farcasterContext?.client?.added && (
+                <button 
+                  onClick={async () => {
+                    try {
+                      await sdk.actions.addMiniApp();
+                    } catch (e) {
+                      console.error("Error adding mini app:", e);
+                    }
+                  }}
+                  className="flex items-center justify-center w-full gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 py-3.5 rounded-xl font-semibold transition-colors cursor-pointer"
+                >
+                  Add to Farcaster Menu
+                </button>
+              )}
+            </div>
+          )}
+
           <button 
             onClick={resetRoutine}
-            className="flex items-center justify-center w-full gap-2 bg-slate-800 text-white py-4 rounded-xl font-semibold hover:bg-slate-700 transition-colors"
+            className="flex items-center justify-center w-full gap-2 bg-slate-800 text-white py-4 rounded-xl font-semibold hover:bg-slate-700 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-5 h-5" />
             Do it again
@@ -393,10 +567,14 @@ export default function App() {
     );
   }
 
+  // Calculate dynamic circular progress percentage
+  const progressPercentage = isFinished ? 1 : (isPreparing ? 0 : 1 - (timeLeft / currentStep.duration));
+  const strokeDashoffset = circumference - progressPercentage * circumference;
+
   return (
     <div className="app-viewport bg-slate-50 p-4 font-sans text-slate-800">
       
-      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100 compact-container flex flex-col justify-between">
+      <div className="relative max-w-md w-full bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-100 compact-container flex flex-col justify-between">
         {/* Header */}
         <div className={`p-6 ${currentStep.bgColor} transition-colors duration-500 compact-header-p`}>
           <div className="flex justify-between items-center mb-6 compact-header-mb">
@@ -404,10 +582,10 @@ export default function App() {
             <div className="flex items-center gap-3">
               <button 
                 onClick={toggleTutorialMode}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-2 rounded-full border transition-colors ${
                   tutorialMode 
-                    ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' 
-                    : 'bg-white/50 hover:bg-white/80 text-slate-700'
+                    ? `bg-white ${currentStep.color} border-slate-200/50 shadow-sm` 
+                    : 'bg-white/50 border-transparent hover:bg-white/80 text-slate-700'
                 }`}
                 title={tutorialMode ? "Disable tutorial explanation" : "Enable tutorial explanation"}
               >
@@ -423,45 +601,59 @@ export default function App() {
               >
                 {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
               </button>
-              <span className="text-sm font-semibold bg-white/60 px-3 py-1 rounded-full text-slate-700 compact-text-header">
-                Step {currentStepIndex + 1} of {ROUTINE.length}
+              <span className="text-sm font-semibold bg-white/60 px-3 py-1 rounded-full text-slate-700 compact-text-header whitespace-nowrap">
+                Step {currentStepIndex + 1}/{ROUTINE.length}
               </span>
             </div>
           </div>
           
           {/* Timer Display */}
-          <div className="relative flex justify-center items-center py-4 compact-timer-py">
-            <svg className="w-64 h-64 transform -rotate-90 compact-timer-svg" viewBox="0 0 256 256">
-              {/* Background Ring */}
-              <circle
-                cx="128"
-                cy="128"
-                r={radius}
-                className="stroke-slate-200"
-                strokeWidth="12"
-                fill="transparent"
-              />
-              {/* Progress Ring */}
-              <circle
-                cx="128"
-                cy="128"
-                r={radius}
-                className={`${currentStep.ringColor} transition-all duration-1000 ease-linear`}
-                strokeWidth="12"
-                fill="transparent"
-                strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
-                strokeLinecap="round"
-              />
-            </svg>
-            
-            <div className="absolute flex flex-col items-center justify-center pointer-events-none">
-              <div className={`mb-1 ${currentStep.color} w-20 h-20 compact-visualizer-box`}>
-                <Visualizer stepId={currentStep.id} timeLeft={timeLeft} duration={currentStep.duration} />
+          <div className="relative flex flex-col items-center justify-center py-4 compact-timer-py">
+            <div className="relative flex justify-center items-center">
+              <svg className="w-64 h-64 transform -rotate-90 compact-timer-svg" viewBox="0 0 256 256">
+                {/* Background Ring */}
+                <circle
+                  cx="128"
+                  cy="128"
+                  r={radius}
+                  className="stroke-slate-200"
+                  strokeWidth="12"
+                  fill="transparent"
+                />
+                {/* Progress Ring */}
+                <circle
+                  cx="128"
+                  cy="128"
+                  r={radius}
+                  className={`${currentStep.ringColor} transition-all duration-1000 ease-linear`}
+                  strokeWidth="12"
+                  fill="transparent"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                />
+              </svg>
+              
+              {/* Visualizer centered inside the progress ring - completely unblocked! */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className={`${currentStep.color} w-28 h-28 compact-visualizer-box`}>
+                  <Visualizer stepId={currentStep.id} timeLeft={timeLeft} duration={currentStep.duration} />
+                </div>
               </div>
-              <span className="text-4xl font-extrabold tabular-nums tracking-tight bg-white/40 px-3 py-0.5 rounded-xl backdrop-blur-sm -mt-3 compact-text-timer">
-                {formatTime(timeLeft)}
-              </span>
+            </div>
+            
+            {/* Timer Badge overlapping bottom of the ring dial to prevent visual blocking */}
+            <div className="absolute -bottom-1 z-10 pointer-events-none">
+              {isPreparing ? (
+                <div className="flex flex-col items-center bg-white/90 border border-slate-200/60 px-4 py-1 rounded-xl compact-text-timer animate-pulse shadow-sm">
+                  <span className="text-[11px] font-bold text-slate-500 mb-0.5">Prepare</span>
+                  <span className="text-2xl font-extrabold tabular-nums leading-none">{prepareTime}</span>
+                </div>
+              ) : (
+                <span className="text-3xl font-extrabold tabular-nums tracking-tight bg-white/90 border border-slate-200/60 px-4 py-1 rounded-2xl compact-text-timer shadow-sm">
+                  {formatTime(timeLeft)}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -477,7 +669,7 @@ export default function App() {
           <div className="flex items-center justify-center gap-6">
             <button 
               onClick={handlePrev}
-              disabled={currentStepIndex === 0}
+              disabled={currentStepIndex === 0 && timeLeft === currentStep.duration}
               className="p-3 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full disabled:opacity-30 disabled:hover:bg-transparent transition-all"
             >
               <SkipBack className="w-6 h-6" fill="currentColor" />
@@ -485,10 +677,9 @@ export default function App() {
 
             <button 
               onClick={toggleTimer}
-              className={`w-20 h-20 flex items-center justify-center rounded-full shadow-lg text-white transition-transform hover:scale-105 active:scale-95 compact-btn-main ${isActive ? 'bg-slate-800' : currentStep.bgColor.replace('bg-', 'bg-').replace('50', '500')}`}
-              style={{ backgroundColor: isActive ? '#1e293b' : undefined }} // Fallback override
+              className={`w-20 h-20 flex items-center justify-center rounded-full shadow-md text-white transition-transform hover:scale-105 active:scale-95 compact-btn-main ${isActive || isPreparing ? 'bg-slate-800 hover:bg-slate-900' : `${currentStep.btnBg} ${currentStep.btnHoverBg}`}`}
             >
-              {isActive ? (
+              {isActive || isPreparing ? (
                 <Pause className="w-8 h-8" fill="currentColor" />
               ) : (
                 <Play className="w-8 h-8 ml-1" fill="currentColor" />
@@ -501,6 +692,21 @@ export default function App() {
             >
               <SkipForward className="w-6 h-6" fill="currentColor" />
             </button>
+          </div>
+
+          {/* Up Next Preview nested inside the container to prevent iPhone SE clipping */}
+          <div className="mt-8 compact-footer-mt">
+            <div className="flex gap-2">
+              {ROUTINE.map((step, idx) => (
+                <div 
+                  key={step.id} 
+                  className={`flex-1 h-2 rounded-full transition-colors ${
+                    idx < currentStepIndex ? 'bg-slate-800' : 
+                    idx === currentStepIndex ? step.barBg : 'bg-slate-200'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -517,14 +723,14 @@ export default function App() {
             <span className={`${currentStep.color} font-extrabold text-2xl`}>✦</span>
             {currentStep.title} Guide
           </h3>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">
-            Tutorial Active
+          <p className="text-xs font-semibold text-slate-500 mb-4">
+            Tutorial active
           </p>
 
           <div className="space-y-5 flex-1 mb-6 compact-drawer-grid">
             {/* "How" Section */}
             <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 flex items-center gap-1.5">
+              <h4 className="text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                 How to do it
               </h4>
@@ -535,7 +741,7 @@ export default function App() {
 
             {/* "Why" Section */}
             <div className={`${currentStep.bgColor} p-4 rounded-2xl border border-slate-200/50`}>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5 flex items-center gap-1.5">
+              <h4 className="text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1.5">
                 <span className={`w-1.5 h-1.5 rounded-full ${currentStep.ringColor.replace('stroke-', 'bg-')}`} />
                 Why it works
               </h4>
@@ -549,9 +755,15 @@ export default function App() {
             onClick={() => {
               initAudio();
               setShowTutorial(false);
-              setIsActive(true);
+              // Mark the current step tutorial as dismissed so it doesn't show up again on navigation
+              if (!dismissedSteps.includes(currentStep.id)) {
+                setDismissedSteps((prev) => [...prev, currentStep.id]);
+              }
+              setIsPreparing(true);
+              setPrepareTime(3);
+              setIsActive(false);
             }}
-            className={`w-full py-4 rounded-2xl font-bold text-white shadow-lg transition-all text-center text-white cursor-pointer compact-drawer-btn ${
+            className={`w-full py-4 rounded-2xl font-bold text-white shadow-lg transition-all text-center cursor-pointer compact-drawer-btn ${
               currentStep.id === 'piriformis' ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-200' :
               currentStep.id === 'nerve-floss' ? 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200' :
               currentStep.id === 'glute-bridges' ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-200' :
@@ -560,21 +772,6 @@ export default function App() {
           >
             Got it, let's go!
           </button>
-        </div>
-      </div>
-
-      {/* Up Next Preview */}
-      <div className="max-w-md w-full mt-6 compact-footer-mt">
-        <div className="flex gap-2">
-          {ROUTINE.map((step, idx) => (
-            <div 
-              key={step.id} 
-              className={`flex-1 h-2 rounded-full transition-colors ${
-                idx < currentStepIndex ? 'bg-slate-800' : 
-                idx === currentStepIndex ? step.ringColor.replace('stroke-', 'bg-') : 'bg-slate-200'
-              }`}
-            />
-          ))}
         </div>
       </div>
     </div>
