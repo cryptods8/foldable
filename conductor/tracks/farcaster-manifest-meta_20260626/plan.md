@@ -1,13 +1,13 @@
 # Implementation Plan: Farcaster manifest and metadata optimization
 
 ## Phase 1: Domain transition and manifest updates
-- [ ] Task: Refactor Farcaster Manifest (`public/.well-known/farcaster.json`)
-    - [ ] Update `accountAssociation.payload` to `"eyJkb21haW4iOiJmb2xkYWJsZS5vbmZjLnh5eiJ9"` (representing `"foldable.onfc.xyz"`)
-    - [ ] Update all URL fields to target `https://foldable.onfc.xyz/`
-- [ ] Task: Refactor PWA Web Manifest (`public/manifest.json`)
-    - [ ] Update `short_name` to `"Foldable"`
-    - [ ] Ensure name is `"Morning Mobility - Foldable"`
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Domain transition and manifest updates' (Protocol in workflow.md)
+- [x] Task: Refactor Farcaster Manifest (`public/.well-known/farcaster.json`)
+    - [x] Update `accountAssociation.payload` to `"eyJkb21haW4iOiJmb2xkYWJsZS5vbmZjLnh5eiJ9"` (representing `"foldable.onfc.xyz"`)
+    - [x] Update all URL fields to target `https://foldable.onfc.xyz/`
+- [x] Task: Refactor PWA Web Manifest (`public/manifest.json`)
+    - [x] Update `short_name` to `"Foldable"`
+    - [x] Ensure name is `"Morning Mobility - Foldable"`
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Domain transition and manifest updates' (Protocol in workflow.md)
 
 ## Phase 2: HTML Head Optimization (Meta Tags & OpenGraph)
 - [ ] Task: Inject and verify OpenGraph/Twitter Cards metadata in `index.html`
