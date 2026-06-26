@@ -2,12 +2,12 @@
 
 ## Phase 1: Local Server Setup
 
-- [ ] Task: Implement Local Application Server
-    - [ ] Create a lightweight Node.js/Express server script `scripts/serve.js` (or similar) to serve the static `dist/` directory.
-    - [ ] Register `express` as a dependency in the project `package.json` for serving files.
-    - [ ] Create a PM2 ecosystem configuration file `ecosystem.config.cjs` configured with process name, port (default `3040`), and env variables.
-    - [ ] Verify local server behaves correctly by running `pnpm build` followed by a local server run.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Local Server Setup' (Protocol in workflow.md)
+- [x] Task: Implement Local Application Server
+    - [x] Create a lightweight Node.js/Express server script `scripts/serve.js` (or similar) to serve the static `dist/` directory.
+    - [x] Register `express` as a dependency in the project `package.json` for serving files.
+    - [x] Create a PM2 ecosystem configuration file `ecosystem.config.cjs` configured with process name, port (default `3040`), and env variables.
+    - [x] Verify local server behaves correctly by running `pnpm build` followed by a local server run.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Local Server Setup' (Protocol in workflow.md)
 
 ## Phase 2: VPS Preparation & Nginx Configuration
 
