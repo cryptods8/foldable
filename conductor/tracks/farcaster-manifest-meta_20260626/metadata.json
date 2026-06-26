@@ -1,0 +1,8 @@
+{
+  "track_id": "farcaster-manifest-meta_20260626",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-06-26T13:35:49Z",
+  "updated_at": "2026-06-26T13:35:49Z",
+  "description": "Finishing Farcaster setup - app is deployed at foldable.onfc.xyz, now it's time to add manifest and proper metadata (also for opengraph)"
+}
