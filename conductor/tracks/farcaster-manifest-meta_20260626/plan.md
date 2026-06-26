@@ -10,11 +10,11 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Domain transition and manifest updates' (Protocol in workflow.md)
 
 ## Phase 2: HTML Head Optimization (Meta Tags & OpenGraph)
-- [ ] Task: Inject and verify OpenGraph/Twitter Cards metadata in `index.html`
-    - [ ] Update `fc:miniapp` and `fc:frame` meta URLs to target `foldable.onfc.xyz`
-    - [ ] Add OpenGraph properties: `og:title`, `og:description`, `og:image`, `og:url`, `og:type`
-    - [ ] Add Twitter properties: `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: HTML Head Optimization (Meta Tags & OpenGraph)' (Protocol in workflow.md)
+- [x] Task: Inject and verify OpenGraph/Twitter Cards metadata in `index.html`
+    - [x] Update `fc:miniapp` and `fc:frame` meta URLs to target `foldable.onfc.xyz`
+    - [x] Add OpenGraph properties: `og:title`, `og:description`, `og:image`, `og:url`, `og:type`
+    - [x] Add Twitter properties: `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
+- [x] Task: Conductor - User Manual Verification 'Phase 2: HTML Head Optimization (Meta Tags & OpenGraph)' (Protocol in workflow.md)
 
 ## Phase 3: Source Code URL updates
 - [ ] Task: Update share URLs in React source code (`src/App.tsx`)
