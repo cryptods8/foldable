@@ -1,0 +1,8 @@
+{
+  "track_id": "narrow-tall-displays_20260626",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-06-26T14:05:16Z",
+  "updated_at": "2026-06-26T14:05:16Z",
+  "description": "Mobile layout fixes - rely on width more than height for displays that are narrow and tall"
+}
