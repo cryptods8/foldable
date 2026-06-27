@@ -1,15 +1,19 @@
 import { useState, useEffect, useCallback } from 'react';
 import { sdk } from '@farcaster/miniapp-sdk';
-import { 
-  Play, 
-  Pause, 
-  SkipForward, 
-  SkipBack, 
-  RotateCcw, 
+import {
+  Play,
+  Pause,
+  SkipForward,
+  SkipBack,
+  RotateCcw,
   CheckCircle,
   Volume2,
   VolumeX,
-  HelpCircle
+  HelpCircle,
+  Activity,
+  Headphones,
+  Clock,
+  ArrowRight
 } from 'lucide-react';
 
 // --- AUDIO HELPERS ---
@@ -311,6 +315,18 @@ export default function App() {
     initFarcaster();
   }, []);
 
+  // First-time welcome / intro screen (explains the app's purpose).
+  // Shown once per device until the user begins; persisted in localStorage.
+  const [showIntro, setShowIntro] = useState<boolean>(() => {
+    return localStorage.getItem('foldable_intro_seen') !== 'true';
+  });
+
+  const dismissIntro = () => {
+    initAudio(); // first user gesture — unlock the audio context for later cues
+    localStorage.setItem('foldable_intro_seen', 'true');
+    setShowIntro(false);
+  };
+
   // Tutorial Mode & Onboarding States
   const [tutorialMode, setTutorialMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('foldable_tutorial_mode');
@@ -508,6 +524,79 @@ export default function App() {
   // SVG Ring calculation
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
+
+  // First-time welcome screen — explains what the app is before the routine begins.
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans text-slate-800">
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-sm p-8 text-center border border-slate-100">
+          {/* Brand mark */}
+          <div className="mx-auto mb-5 w-[72px] h-[72px]">
+            <svg viewBox="0 0 100 100" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="introGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#f59e0b" />
+                  <stop offset="50%" stopColor="#ef4444" />
+                  <stop offset="100%" stopColor="#8b5cf6" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="45" fill="url(#introGlow)" opacity="0.12" />
+              <path d="M 20 70 A 32 32 0 1 1 80 70" fill="none" stroke="url(#introGlow)" strokeWidth="7" strokeLinecap="round" />
+              <path d="M 30 75 Q 40 75 42 65 Q 44 50 35 40 C 45 28 65 35 70 45 C 72 50 65 65 50 70" fill="none" stroke="#1e293b" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="50" cy="72" r="3.8" fill="#ef4444" />
+            </svg>
+          </div>
+
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-teal-600 mb-2">
+            Physical Therapy · Mobility
+          </p>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2.5 tracking-tight">Morning Mobility</h1>
+          <p className="text-slate-500 font-medium mb-6 leading-relaxed">
+            A calm, guided routine that releases tight hips and an aching lower back, building you toward a deeper, pain-free seated forward fold.
+          </p>
+
+          {/* What to expect */}
+          <div className="flex flex-col gap-2.5 text-left mb-6">
+            <div className="flex items-center gap-3.5 bg-slate-50/70 border border-slate-100 rounded-2xl p-3">
+              <span className="flex-shrink-0 w-10 h-10 rounded-xl bg-white border border-slate-200/70 flex items-center justify-center text-teal-600">
+                <Activity className="w-5 h-5" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-slate-700 leading-tight">4 guided stretches</p>
+                <p className="text-xs text-slate-500 leading-tight">Targeted hip &amp; lower-back release</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3.5 bg-slate-50/70 border border-slate-100 rounded-2xl p-3">
+              <span className="flex-shrink-0 w-10 h-10 rounded-xl bg-white border border-slate-200/70 flex items-center justify-center text-indigo-500">
+                <Headphones className="w-5 h-5" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-slate-700 leading-tight">Audio-paced cues</p>
+                <p className="text-xs text-slate-500 leading-tight">Follow along without watching the screen</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3.5 bg-slate-50/70 border border-slate-100 rounded-2xl p-3">
+              <span className="flex-shrink-0 w-10 h-10 rounded-xl bg-white border border-slate-200/70 flex items-center justify-center text-purple-500">
+                <Clock className="w-5 h-5" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-slate-700 leading-tight">About 5 minutes</p>
+                <p className="text-xs text-slate-500 leading-tight">Works fully offline, no account needed</p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={dismissIntro}
+            className="flex items-center justify-center w-full gap-2 bg-slate-800 text-white py-4 rounded-xl font-semibold hover:bg-slate-700 transition-colors cursor-pointer"
+          >
+            Begin routine
+            <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (isFinished) {
     return (
